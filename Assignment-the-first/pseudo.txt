@@ -1,0 +1,16 @@
+the main ideas:
+import bioinfo module, any other modules needed
+
+open files (R1, I1, I2, R2) for reading
+go read by read through Index 1, looking first at quality scores of indices
+if the indices are low score (below threshold of Q20), send corresponding read lines to low score files per each read file
+if the scores aren't below threshold, then, determine whether corresponding index in I2 is the reverse complement of I1
+	if it is, then add each corresponding read from R1 and R2 to the file corresponding to the barcode
+	if it isn't, add each corresponding read from R1 and R2 to the index-hopped file
+
+for single-nucleotide correction (only one N, might not actually do this... if done, will go below low score section.)
+if there is a single N in the index (in both I1 and I2 combined)...
+	take the index with an N, determine the position of the N
+	take the length of the index, then subtract the value of N (this gives the position of the reverse complement in the other index)
+	using this new position, find the corresponding nucleotide in I2, then take this position's reverse complement (this is the nucleotide that is missing)
+	finally, take this nt and plug it into I1 to remove single N
